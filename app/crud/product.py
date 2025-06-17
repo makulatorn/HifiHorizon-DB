@@ -19,11 +19,19 @@ def create_product(db: Session, product: ProductCreate):
     )
     db.add(db_product)
     
-    for spec in product.specs:
+    if product.specs:
         db_spec = Spec(
-            key=spec.key,
-            value=spec.value,
-            product_id=db_product.id
+            product_id=db_product.id,
+            dimensioner=product.specs.get("dimensioner"),
+            vaegt=product.specs.get("vaegt"),
+            udgange=product.specs.get("udgange"),
+            stroemforbrug=product.specs.get("stroemforbrug"),
+            fjernbetjening=product.specs.get("fjernbetjening"),
+            skaerm=product.specs.get("skaerm"),
+            dac=product.specs.get("dac"),
+            formater=product.specs.get("formater"),
+            finish=product.specs.get("finish"),
+            garanti=product.specs.get("garanti")
         )
         db.add(db_spec)
     
