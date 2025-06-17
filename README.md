@@ -32,7 +32,7 @@ GRANT ALL PRIVILEGES ON DATABASE "DB_name" TO "user";
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install fastapi sqlalchemy psycopg2-binary uvicorn python-dotenv
+pip install -r requirements.txt
 ```
 
 3. Configure environment:
