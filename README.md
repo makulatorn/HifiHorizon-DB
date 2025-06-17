@@ -1,5 +1,5 @@
 # HiFi Horizon Project
-
+A database made for a school project using FastApi
 ## Project Structure
 ```
 hifi-horizon/
