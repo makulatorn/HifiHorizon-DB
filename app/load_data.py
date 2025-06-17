@@ -1,35 +1,68 @@
+from sqlalchemy.orm import Session
+from .models.product import Product
+from .database import SessionLocal
+from .schemas.product import ProductCreate
+from .crud.product import create_product  # Add this import
 import json
-import sys
-import os 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from app.crud import product as crud
-from app.schemas.product import ProductCreate
-from app.database import SessionLocal
 
-with open("data.json", encoding="utf-8") as f:
-    raw_data = json.load(f)
-    
-def normalize_kategori(kategori):
-    return kategori.lower().replace(" ","_").replace(".","").replace("æ","ae").replace("ø","oe").replace("å","aa")
+def load_data():
+    db = SessionLocal()
+    try:
+        # Read JSON data
+        with open("data.json", "r", encoding="utf-8") as f:
+            raw_data = json.load(f)
 
-db = SessionLocal()
-for entry in raw_data:
-    img_subfolder = normalize_kategori(entry["kategori"])
-    image_path = f"/static/{img_subfolder}/{entry['image']}"
-    #laver et "bibliotek" af data. Giver par ("dimension", "data")
-    #laver et ProductCreate object med key=k og value=v
-    specs = [{"key": k, "value": v} for k, v in entry["specs"].items()]
-    product = ProductCreate(
-        id=entry["id"],
-        productname=entry["productname"],
-        kategori=entry["kategori"],
-        producent=entry["producent"],
-        color=entry["color"],
-        pris=entry["pris"],
-        stock=entry["stock"],
-        desc=entry["desc"],
-        image=image_path,
-        specs=specs
-    )
-    crud.create_product(db, product)
-db.close()
+        for entry in raw_data:
+            if "kategori" not in entry:
+                continue
+
+            # Check if product already exists
+            existing_product = db.query(Product).filter(
+                Product.id == entry.get("id")
+            ).first()
+            
+            if existing_product:
+                print(f"Product {entry.get('id')} already exists, skipping...")
+                continue
+
+            # Transform specs if they exist
+            if "specs" in entry:
+                specs = {
+                    "dimensioner": entry["specs"].get("dimensioner"),
+                    "vaegt": entry["specs"].get("vægt"),
+                    "udgange": entry["specs"].get("udgange"),
+                    "stroemforbrug": entry["specs"].get("strømforbrug"),
+                    "fjernbetjening": entry["specs"].get("fjernbetjening"),
+                    "skaerm": entry["specs"].get("skærm"),
+                    "dac": entry["specs"].get("DAC"),
+                    "formater": entry["specs"].get("understøttede formater"),
+                    "finish": entry["specs"].get("finish"),
+                    "garanti": entry["specs"].get("garanti")
+                }
+            else:
+                specs = {}
+
+            # Create product using ProductCreate schema
+            product = ProductCreate(
+                id=entry.get("id", ""),
+                productname=entry.get("productname", ""),
+                kategori=entry.get("kategori", ""),
+                producent=entry.get("producent", ""),
+                color=entry.get("color", ""),
+                pris=entry.get("pris", 0),
+                stock=entry.get("stock", 0),
+                desc=entry.get("desc", ""),
+                image=f"/static/{entry['kategori'].lower().replace(' ', '_')}/{entry['image']}",
+                specs=specs
+            )
+            
+            create_product(db, product)
+
+    except Exception as e:
+        print(f"Error loading data: {str(e)}")
+        db.rollback()
+    finally:
+        db.close()
+
+if __name__ == "__main__":
+    load_data()

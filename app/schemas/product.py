@@ -1,33 +1,37 @@
 from pydantic import BaseModel
-from typing import List, Union
+from typing import Optional, Dict
 
 class SpecBase(BaseModel):
-    key: str
-    value: str
-
-class SpecCreate(SpecBase):
-    pass
-
-class Spec(SpecBase):
-    id: int
+    dimensioner: Optional[str] = None
+    vaegt: Optional[str] = None
+    udgange: Optional[str] = None
+    stroemforbrug: Optional[str] = None
+    fjernbetjening: Optional[str] = None
+    skaerm: Optional[str] = None
+    dac: Optional[str] = None
+    formater: Optional[str] = None
+    finish: Optional[str] = None
+    garanti: Optional[str] = None
+    
     class Config:
-        orm_mode = True
+        from_attributes = True 
 
 class ProductBase(BaseModel):
-    id: str
     productname: str
     kategori: str
     producent: str
     color: str
-    pris: int
+    pris: float
     stock: int
     desc: str
     image: str
-    specs: List[SpecCreate] = []
+    specs: Dict[str, Optional[str]]  
 
 class ProductCreate(ProductBase):
-    pass
+    id: str
 
 class Product(ProductBase):
+    id: str
+    
     class Config:
-        orm_mode = True
+        from_attributes = True
