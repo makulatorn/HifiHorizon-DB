@@ -5,28 +5,34 @@ from dotenv import load_dotenv
 import os
 import logging
 
-# Set up logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
-logger.debug(f"Initial DATABASE_URL: {SQLALCHEMY_DATABASE_URL}")
+# Get the database URL and log it for debugging
+DATABASE_URL = os.getenv("DATABASE_URL")
+logger.info(f"Raw DATABASE_URL: {DATABASE_URL}")
 
-if SQLALCHEMY_DATABASE_URL and SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
-    SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)
-    
-logger.debug(f"Processed DATABASE_URL: {SQLALCHEMY_DATABASE_URL}")
+# Ensure the URL exists and format it correctly
+if not DATABASE_URL:
+    raise ValueError("No DATABASE_URL environment variable set")
 
-# Add SSL requirements for Render
+# Create the database engine with full connection URL
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL,
-    echo=True,  # Will log all SQL
-    connect_args={
-        "sslmode": "require"
-    }
+    DATABASE_URL,
+    echo=True,
+    pool_pre_ping=True
 )
+
+try:
+    # Test the connection
+    with engine.connect() as conn:
+        conn.execute("SELECT 1")
+        logger.info("Database connection successful")
+except Exception as e:
+    logger.error(f"Database connection failed: {str(e)}")
+    raise
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
