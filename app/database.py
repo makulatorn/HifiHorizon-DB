@@ -6,20 +6,17 @@ import os
 
 load_dotenv()
 
-# Get Database URL from environment
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Handle the "postgres://" to "postgresql://" conversion
 if SQLALCHEMY_DATABASE_URL and SQLALCHEMY_DATABASE_URL.startswith("postgres://"):
     SQLALCHEMY_DATABASE_URL = SQLALCHEMY_DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-# Create engine with proper SSL configuration for Render
+# Add SSL requirements for Render
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
-    pool_size=5,
-    max_overflow=10,
-    pool_timeout=30,
-    pool_recycle=1800,
+    connect_args={
+        "sslmode": "require"
+    }
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
