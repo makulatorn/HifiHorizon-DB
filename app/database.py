@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
@@ -10,25 +10,30 @@ logger = logging.getLogger(__name__)
 
 load_dotenv()
 
-# Get the database URL and log it for debugging
-DATABASE_URL = os.getenv("DATABASE_URL")
+# Get Database URL with a fallback
+DATABASE_URL = os.getenv("DATABASE_URL", "")
 logger.info(f"Raw DATABASE_URL: {DATABASE_URL}")
 
-# Ensure the URL exists and format it correctly
 if not DATABASE_URL:
-    raise ValueError("No DATABASE_URL environment variable set")
+    raise ValueError("DATABASE_URL environment variable is not set")
 
-# Create the database engine with full connection URL
+# Handle the postgres:// to postgresql:// conversion
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+# Create engine with SSL required for Render
 engine = create_engine(
     DATABASE_URL,
-    echo=True,
-    pool_pre_ping=True
+    connect_args={"sslmode": "require"},
+    pool_pre_ping=True,
+    pool_recycle=60,
+    echo=True
 )
 
+# Test connection before proceeding
 try:
-    # Test the connection
     with engine.connect() as conn:
-        conn.execute("SELECT 1")
+        conn.execute(text("SELECT 1"))
         logger.info("Database connection successful")
 except Exception as e:
     logger.error(f"Database connection failed: {str(e)}")
