@@ -1,5 +1,6 @@
 # HiFi Horizon Project
 A database made for a school project using FastApi
+Includes prerequisites, setup steps and steps to running locally
 ## Project Structure
 ```
 hifi-horizon/
@@ -19,7 +20,18 @@ hifi-horizon/
 - **PostgreSQL** - Database
 - **Python-dotenv** - Environment management
 
-## Setup Steps
+## Prerequisites
+1. Python 3.11 or higher required
+- Check installation: `python --version`
+- [Download Python](https://www.python.org/downloads/) if not installed already
+
+
+2. Install PostgreSQL:
+- [Windows installer](https://www.postgresql.org/download/windows/)
+- macOS: `brew install postgresql@14`
+- Linux: `sudo apt install postgresql postgresql-contrib`
+
+## Setup Steps (Ignore if running locally)
 1. Create database:
 ```bash
 sudo -u postgres psql
@@ -50,6 +62,35 @@ python -m app.load_data
 ```bash
 uvicorn app.main:app --reload
 ```
+## Running Locally
+2. Install dependencies:
+```bash
+# Create and activate virtual environment
+python -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+
+# macOS/Linux
+source .venv/bin/activate
+
+# Install requirements
+pip install -r requirements.txt
+```
+
+3. Initialize database:
+```bash
+# Create tables and load data
+python -m app.init_db
+python -m app.load_data
+```
+
+4. Start server:
+```bash
+uvicorn app.main:app --reload
+```
+
+Visit `http://localhost:8000/docs` for API documentation.
 
 ## API Endpoints
 - `GET /products/` - List all products
