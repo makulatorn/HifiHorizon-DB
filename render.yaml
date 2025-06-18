@@ -9,3 +9,5 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.13.4
+      - key: DATABASE_URL
+        value: postgresql://hifiadmin:KAw5z35y94hsZZCMALJ6mqMgla7BLiKq@dpg-d19a81qdbo4c73d3i7u0-a.frankfurt-postgres.render.com/hifihorizon
