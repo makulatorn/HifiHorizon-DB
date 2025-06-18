@@ -104,18 +104,6 @@ uvicorn app.main:app --reload
   - Filter by category, brand, or color
   - Sort by price (ascending/descending)
 
-### Search Parameters
-- `?sort_by=pris&order=desc` - Sort by price (highest first)
-- `?producent=Creek` - Filter by manufacturer
-- `?color=Sort` - Filter by color
-
-### Example Queries
-```
-http://localhost:8000/products/?sort_by=pris&order=desc
-http://localhost:8000/products/?producent=Creek
-http://localhost:8000/products/?color=Sort
-```
-
 ## Troubleshooting
 
 ### Common Issues
