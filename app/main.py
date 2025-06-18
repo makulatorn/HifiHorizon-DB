@@ -39,7 +39,7 @@ async def root():
             <title>HiFi Horizon</title>
         </head>
         <body>
-            <h1>Welcome to HiFi Horizon</h1>
+            <h1>HiFi Horizon API</h1>
             <p>Visit <a href="/docs">documentation</a> for API endpoints.</p>
             <p>Browse our <a href="/products">products</a>.</p>
         </body>
