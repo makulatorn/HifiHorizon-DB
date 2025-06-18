@@ -22,18 +22,18 @@ hifi-horizon/
 - **Python-dotenv** - Environment management
 
 ## Prerequisites
-1. Python 3.11 or higher required
+### 1. Python 3.11 or higher required
 - Check installation: `python --version`
 - [Download Python](https://www.python.org/downloads/) if not installed already
 
 
-2. Install PostgreSQL:
+### 2. Install PostgreSQL:
 - [Windows installer](https://www.postgresql.org/download/windows/)
 - macOS: `brew install postgresql@14`
 - Linux: `sudo apt install postgresql postgresql-contrib`
 
 ## Setup Steps (Ignore if running locally)
-1. Create database:
+### 1. Create database:
 ```bash
 sudo -u postgres psql
 CREATE DATABASE "DB_name";
@@ -41,7 +41,7 @@ CREATE USER "user" WITH PASSWORD 'password';
 GRANT ALL PRIVILEGES ON DATABASE "DB_name" TO "user";
 ```
 
-2. Install dependencies:
+### 2. Install dependencies:
 ```bash
 python -m venv .venv 
 or, if that doesn't work
@@ -52,25 +52,25 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-3. Configure environment:
+### 3. Configure environment:
 ```
 DATABASE_URL=postgresql://user:password@localhost:5432/DB_name
 ```
 
-4. Initialize database:
+### 4. Initialize database:
 ```bash
 python -m app.init_db
 python -m app.load_data
 ```
 
-5. Start server:
+### 5. Start server:
 ```bash
 uvicorn app.main:app --reload
 ```
 ## Running Locally
-1. Clone the repo
+### 1. Clone the repo
 
-2. Create virtual enviroment and install dependencies:
+### 2. Create virtual enviroment and install dependencies:
 This step is necessary because projects need to be able to specify their package and interpreter dependencies in isolation from other projects.
 ```bash
 # Create and activate virtual environment
@@ -88,13 +88,50 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-3. Start server:
+### 3. Start server:
 ```bash
 uvicorn app.main:app --reload
 ```
+### 4. Verify Installation
+- Open http://localhost:8000/docs in your browser
+- You should see the Swagger documentation
 
-Visit `http://localhost:8000/docs` for API documentation.
+## API Features
 
-## API Endpoints
-- `GET /products/` - List all products
-- `GET /docs` - API documentation
+### Product Endpoints
+- `GET /products/`
+  - List all products
+  - Filter by category, brand, or color
+  - Sort by price (ascending/descending)
+
+### Search Parameters
+- `?sort_by=pris&order=desc` - Sort by price (highest first)
+- `?producent=Creek` - Filter by manufacturer
+- `?color=Sort` - Filter by color
+
+### Example Queries
+```
+http://localhost:8000/products/?sort_by=pris&order=desc
+http://localhost:8000/products/?producent=Creek
+http://localhost:8000/products/?color=Sort
+```
+
+## Troubleshooting
+
+### Common Issues
+1. "Port already in use":
+   ```bash
+   # Find and kill process on port 8000
+   sudo lsof -i :8000
+   kill <PID>
+   ```
+
+2. "Database connection failed":
+   - Check PostgreSQL is running
+   - Verify credentials in `.env`
+
+3. "Module not found":
+   - Make sure virtual environment is activated
+   - Reinstall requirements
+
+Need help? Open an issue on GitHub!
