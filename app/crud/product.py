@@ -31,7 +31,24 @@ def create_product(db: Session, product: ProductCreate):
             dac=product.specs.get("dac"),
             formater=product.specs.get("formater"),
             finish=product.specs.get("finish"),
-            garanti=product.specs.get("garanti")
+            garanti=product.specs.get("garanti"),
+            hastighed=product.specs.get("hastighed"),
+            motor=product.specs.get("motor"),
+            pickup=product.specs.get("pickup"),
+            tone_arm=product.specs.get("tonearm"),
+            plade_tallerken=product.specs.get("pladetallerken"),
+            drev=product.specs.get("drev"),
+            kabinett=product.specs.get("kabinett"),
+            hastigheder=product.specs.get("hastigheder"),
+            frekvensomraade=product.specs.get("frekvensområde"),
+            roer=product.specs.get("rør"),
+            effekt=product.specs.get("effekt"),
+            foelsomhed=product.specs.get("følsomhed"),
+            impedans=product.specs.get("impedans"),
+            type=product.specs.get("type"),
+            enheder=product.specs.get("enheder"),
+            kontrol=product.specs.get("kontrol"),
+            kanaler=product.specs.get("kanaler")
         )
         db.add(db_spec)
     

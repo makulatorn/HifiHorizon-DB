@@ -65,7 +65,24 @@ async def get_products(db: Session = Depends(get_db)):
                     "dac": p.specs.dac if p.specs else None,
                     "formater": p.specs.formater if p.specs else None,
                     "finish": p.specs.finish if p.specs else None,
-                    "garanti": p.specs.garanti if p.specs else None
+                    "garanti": p.specs.garanti if p.specs else None,
+                    "hastighed": p.specs.hastighed if p.specs else None,
+                    "motor": p.specs.motor if p.specs else None,
+                    "pickup": p.specs.pickup if p.specs else None,
+                    "tone_arm": p.specs.tone_arm if p.specs else None,
+                    "plade_tallerken": p.specs.plade_tallerken if p.specs else None,
+                    "drev": p.specs.drev if p.specs else None,
+                    "kabinett": p.specs.kabinett if p.specs else None,
+                    "hastigheder": p.specs.hastigheder if p.specs else None,
+                    "frekvensomraade": p.specs.frekvensomraade if p.specs else None,
+                    "roer": p.specs.roer if p.specs else None,
+                    "effekt": p.specs.effekt if p.specs else None,
+                    "foelsomhed": p.specs.foelsomhed if p.specs else None,
+                    "impedans": p.specs.impedans if p.specs else None,
+                    "type": p.specs.type if p.specs else None,
+                    "enheder": p.specs.enheder if p.specs else None,
+                    "kontrol": p.specs.kontrol if p.specs else None,
+                    "kanaler": p.specs.kanaler if p.specs else None
                 } if p.specs else {}
             } for p in products
         ]
