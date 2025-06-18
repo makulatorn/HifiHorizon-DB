@@ -1,6 +1,7 @@
 # HiFi Horizon Project
 A database made for a school project using FastApi
 Includes prerequisites, setup steps and steps to running locally
+
 ## Project Structure
 ```
 hifi-horizon/
@@ -42,8 +43,12 @@ GRANT ALL PRIVILEGES ON DATABASE "DB_name" TO "user";
 
 2. Install dependencies:
 ```bash
-python -m venv .venv (or python3 -m venv .venv for macOS/Linux)
+python -m venv .venv 
+or, if that doesn't work
+python3 -m venv .venv
+
 source .venv/bin/activate
+
 pip install -r requirements.txt
 ```
 
@@ -65,7 +70,8 @@ uvicorn app.main:app --reload
 ## Running Locally
 1. Clone the repo
 
-2. Install dependencies:
+2. Create virtual enviroment and install dependencies:
+This step is necessary because projects need to be able to specify their package and interpreter dependencies in isolation from other projects.
 ```bash
 # Create and activate virtual environment
 python -m venv .venv
