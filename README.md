@@ -80,14 +80,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-3. Initialize database:
-```bash
-# Create tables and load data
-python -m app.init_db
-python -m app.load_data
-```
-
-4. Start server:
+3. Start server:
 ```bash
 uvicorn app.main:app --reload
 ```
