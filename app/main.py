@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from .routers import products
+import uvicorn
 
 app = FastAPI()
 
@@ -45,3 +46,7 @@ async def root():
         </body>
     </html>
     """
+    
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
