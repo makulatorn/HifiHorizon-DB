@@ -10,7 +10,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     #Url allowed to access the API
-    allow_origins=["http://localhost:3000"],  #React URL
+    allow_origins=["http://localhost:5173"],  #React URL
     #When true allows cookies and authtication headers
     allow_credentials=True,
     #Allows all methods (GET, POST, PUT, DELETE, etc.)
