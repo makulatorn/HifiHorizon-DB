@@ -1,5 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
+from typing import Optional, Literal
 from sqlalchemy.orm import Session
+from sqlalchemy import asc, desc
 from ..models.product import Product
 from ..database import SessionLocal
 import logging
@@ -32,18 +34,46 @@ def get_db():
         db.close()
 
 @router.get("/")
-async def get_products(db: Session = Depends(get_db)):
+async def get_products(
+    db: Session = Depends(get_db),
+    #Name of what to sort by
+    sort_by: Optional[Literal["producent", "color", "pris"]] = Query(
+        None,
+        description="Sort by:"
+    ),
+    #Order of sorting
+    order: Optional[Literal["asc", "desc"]] = Query(
+        "asc",
+        description="Sort order: asc (ascending) or desc (descending)"
+    ),
+    color: Optional[Literal["Sort", "Sølv", "Blå", "Rød", "Gul"]] = Query(
+        None,
+        description="Filter by color:"
+    ),
+    producent: Optional[Literal["Creek", "Exposure", "Parasound", "Manley", "Pro-Ject", "Bösendorfer", "Epos", "Harbeth", "Jolida"]] = Query(
+        None,
+        description="Filter by brand:"
+    )
+):
     try:
-        products = db.query(Product).all()
-        logger.info(f"Found{len(products)} products")
-        
-        if not products:
-            logger.warning("No products found in database")
-            raise HTTPException(
-                status_code=404, 
-                detail="No products found in database"
-            )
+        query = db.query(Product)
+
+        # Apply filters if provided
+        if color:
+            query = query.filter(Product.color == color)
+        if producent:
+            query = query.filter(Product.producent == producent)
             
+        # Apply sorting
+        if sort_by:
+            sort_column = getattr(Product, sort_by)
+            if order == "desc":
+                query = query.order_by(desc(sort_column))
+            else:
+                query = query.order_by(asc(sort_column))
+        
+        products = query.all()
+        logger.info(f"Found {len(products)} products")
         return [
             {
                 "id": p.id,
