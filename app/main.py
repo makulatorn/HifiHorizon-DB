@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from .routers import products
 import uvicorn
+import os
 
 app = FastAPI()
 
