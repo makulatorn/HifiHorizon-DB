@@ -30,7 +30,7 @@ GRANT ALL PRIVILEGES ON DATABASE "DB_name" TO "user";
 
 2. Install dependencies:
 ```bash
-python -m venv .venv
+python -m venv .venv (or python3 -m venv .venv for macOS/Linux)
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -40,7 +40,13 @@ pip install -r requirements.txt
 DATABASE_URL=postgresql://user:password@localhost:5432/DB_name
 ```
 
-4. Run application:
+4. Initialize database:
+```bash
+python -m app.init_db
+python -m app.load_data
+```
+
+5. Start server:
 ```bash
 uvicorn app.main:app --reload
 ```
