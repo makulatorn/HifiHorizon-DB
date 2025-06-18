@@ -2,6 +2,13 @@
 A database made for a school project using FastApi
 Includes prerequisites, setup steps and steps to running locally
 
+## Project Overview
+This project provides an API for accessing and managing a database of HiFi equipment including:
+- CD Players
+- Amplifiers
+- Turntables
+- Speakers
+
 ## Project Structure
 ```
 hifi-horizon/
