@@ -8,4 +8,6 @@ services:
       - key: PYTHON_VERSION
         value: 3.13.4
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: hifihorizon
+          property: connectionString

@@ -8,25 +8,16 @@ import os
 
 app = FastAPI()
 
-
 app.add_middleware(
     CORSMiddleware,
-    #Url allowed to access the API
-    allow_origins=["http://localhost:5173"],  #React URL
-    #When true allows cookies and authtication headers
+    allow_origins=[
+        "http://localhost:5173",  # Development
+        "https://hifihorizon-db.onrender.com"  # Production
+    ],
     allow_credentials=True,
-    #Allows all methods (GET, POST, PUT, DELETE, etc.)
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    #Allows all headers (Content-Type, Authorization, etc.)
-    allow_headers=[
-        "Content-Type", #Needed for JSON requests
-        "Authorization", #Required for token-based auth
-        "Access-Control-Allow-Headers", #CORS speification
-        "Origin", #Browser sends origin header
-        "Accept" #Specifies acceptable response format
-    ]
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
-
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
