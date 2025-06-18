@@ -63,6 +63,8 @@ python -m app.load_data
 uvicorn app.main:app --reload
 ```
 ## Running Locally
+1. Clone the repo
+
 2. Install dependencies:
 ```bash
 # Create and activate virtual environment
