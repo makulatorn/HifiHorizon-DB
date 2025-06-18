@@ -69,6 +69,8 @@ uvicorn app.main:app --reload
 ```bash
 # Create and activate virtual environment
 python -m venv .venv
+or, if that doesn't work:
+python3 -m venv .venv
 
 # Windows
 .venv\Scripts\activate
