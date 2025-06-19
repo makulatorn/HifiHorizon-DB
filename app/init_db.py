@@ -1,6 +1,6 @@
-from app.database import engine
-from app.models.base import Base
-from app.models.product import Product, Spec
+from database import engine
+from models.base import Base
+from models.product import Product, Spec
 
 def init_db():
     print("Creating database tables...")
