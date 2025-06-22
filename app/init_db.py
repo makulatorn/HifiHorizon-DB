@@ -1,7 +1,7 @@
 from sqlalchemy import text
 from app.database import engine, SessionLocal
 from app.models.base import Base
-from app.models.product import Product, Spec
+from app.models import Product, Spec
 import logging
 
 logging.basicConfig(level=logging.INFO)
