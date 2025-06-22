@@ -1,15 +1,17 @@
 from sqlalchemy.orm import Session
-from .models.product import Product
-from .database import SessionLocal
-from .schemas.product import ProductCreate
-from .crud.product import create_product  # Add this import
+from app.models.product import Product
+from app.database import SessionLocal
+from app.schemas.product import ProductCreate
+from app.crud.product import create_product  # Add this import
 import json
+import os
 
 def load_data():
     db = SessionLocal()
     try:
         # Read JSON data
-        with open("data.json", "r", encoding="utf-8") as f:
+        data_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data.json")
+        with open(data_path, "r", encoding="utf-8") as f:
             raw_data = json.load(f)
 
         for entry in raw_data:
