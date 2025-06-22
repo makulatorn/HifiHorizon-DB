@@ -5,6 +5,12 @@ from fastapi.responses import HTMLResponse
 from .routers import products
 import uvicorn
 import os
+from app.models.base import Base
+from app.database import engine
+import app.models.product
+
+print("=== FORCING TABLE CREATION ON APP START ===")
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
