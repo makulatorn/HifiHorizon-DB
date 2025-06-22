@@ -84,7 +84,7 @@ def load_data():
                 pris=entry.get("pris", 0),
                 stock=entry.get("stock", 0),
                 desc=entry.get("desc", ""),
-                image=f"/static/{slugify_folder(entry['kategori'])}/{entry['image']}",
+                image=f"/static/products/{slugify_folder(entry['kategori'])}/{entry['image']}",
                 specs=specs
             )
             
