@@ -6,6 +6,18 @@ from app.crud.product import create_product  # Add this import
 import json
 import os
 
+def slugify_folder(name):
+    return (
+        name.lower()
+        .replace(' ', '_')
+        .replace('æ', 'ae')
+        .replace('ø', 'oe')
+        .replace('å', 'aa')
+        .replace('ä', 'ae')
+        .replace('ö', 'oe')
+        .replace('ü', 'ue')
+    )
+    
 def load_data():
     db = SessionLocal()
     try:
@@ -72,7 +84,7 @@ def load_data():
                 pris=entry.get("pris", 0),
                 stock=entry.get("stock", 0),
                 desc=entry.get("desc", ""),
-                image=f"/static/{entry['kategori'].lower().replace(' ', '_')}/{entry['image']}",
+                image=f"/static/{slugify_folder(entry['kategori'])}/{entry['image']}",
                 specs=specs
             )
             
