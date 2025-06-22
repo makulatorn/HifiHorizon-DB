@@ -8,6 +8,8 @@ import os
 from app.models.base import Base
 from app.database import engine
 import app.models.product
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import Response
 
 app = FastAPI()
 
@@ -21,6 +23,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+class CORSMiddlewareForStatic(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        if request.url.path.startswith("/static/"):
+            response.headers["Access-Control-Allow-Origin"] = "*"
+            response.headers["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+            response.headers["Access-Control-Allow-Headers"] = "*"
+        return response
+
+app.add_middleware(CORSMiddlewareForStatic)
+
 # Mount static files
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
