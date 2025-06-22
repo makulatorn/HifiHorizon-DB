@@ -10,6 +10,7 @@ def slugify_folder(name):
     return (
         name.lower()
         .replace(' ', '_')
+        .replace('.', '')
         .replace('æ', 'ae')
         .replace('ø', 'oe')
         .replace('å', 'aa')
