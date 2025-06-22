@@ -35,8 +35,11 @@ class CORSMiddlewareForStatic(BaseHTTPMiddleware):
 app.add_middleware(CORSMiddlewareForStatic)
 
 # Mount static files
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
+app.mount(
+    "/static",
+    StaticFiles(directory=os.path.join(os.path.dirname(__file__), "..", "static")),
+    name="static"
+)
 # Include routers
 app.include_router(products.router)
 
