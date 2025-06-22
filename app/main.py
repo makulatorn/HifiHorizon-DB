@@ -11,7 +11,10 @@ import app.models.product
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 
+print("=== FORCING TABLE CREATION ON APP START ===")
+Base.metadata.create_all(bind=engine)
 app = FastAPI()
+
 
 app.add_middleware(
     CORSMiddleware,
