@@ -122,3 +122,56 @@ async def get_products(
             status_code=500,
             detail=f"Database error: {str(e)}"
         )
+        
+@router.get("/{product_id}")
+async def get_product(product_id: str, db: Session = Depends(get_db)):
+    try:
+        product = db.query(Product).filter(Product.id == product_id).first()
+        if not product:
+            raise HTTPException(status_code=404, detail="Not Found")
+        return {
+            "id": product.id,
+            "productname": product.productname,
+            "kategori": product.kategori,
+            "producent": product.producent,
+            "color": product.color,
+            "pris": product.pris,
+            "stock": product.stock,
+            "desc": product.desc,
+            "image": product.image,
+            "specs": {
+                "dimensioner": product.specs.dimensioner if product.specs else None,
+                "vaegt": product.specs.vaegt if product.specs else None,
+                "udgange": product.specs.udgange if product.specs else None,
+                "stroemforbrug": product.specs.stroemforbrug if product.specs else None,
+                "fjernbetjening": product.specs.fjernbetjening if product.specs else None,
+                "skaerm": product.specs.skaerm if product.specs else None,
+                "dac": product.specs.dac if product.specs else None,
+                "formater": product.specs.formater if product.specs else None,
+                "finish": product.specs.finish if product.specs else None,
+                "garanti": product.specs.garanti if product.specs else None,
+                "hastighed": product.specs.hastighed if product.specs else None,
+                "motor": product.specs.motor if product.specs else None,
+                "pickup": product.specs.pickup if product.specs else None,
+                "tone_arm": product.specs.tone_arm if product.specs else None,
+                "plade_tallerken": product.specs.plade_tallerken if product.specs else None,
+                "drev": product.specs.drev if product.specs else None,
+                "kabinett": product.specs.kabinett if product.specs else None,
+                "hastigheder": product.specs.hastigheder if product.specs else None,
+                "frekvensomraade": product.specs.frekvensomraade if product.specs else None,
+                "roer": product.specs.roer if product.specs else None,
+                "effekt": product.specs.effekt if product.specs else None,
+                "foelsomhed": product.specs.foelsomhed if product.specs else None,
+                "impedans": product.specs.impedans if product.specs else None,
+                "type": product.specs.type if product.specs else None,
+                "enheder": product.specs.enheder if product.specs else None,
+                "kontrol": product.specs.kontrol if product.specs else None,
+                "kanaler": product.specs.kanaler if product.specs else None
+            } if product.specs else {}
+        }
+    except Exception as e:
+        logger.error(f"Database error: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Database error: {str(e)}"
+        )
